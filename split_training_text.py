@@ -7,11 +7,11 @@ training_text_file = 'langdata/eng.training_text'
 
 lines = []
 
-with open(training_text_file, 'r') as input_file:
+with open(training_text_file, 'r', encoding='utf-8') as input_file:
     for line in input_file.readlines():
         lines.append(line.strip())
 
-output_directory = 'tesstrain/data/Apex-ground-truth'
+output_directory = 'tesstrain/data/NFS-ground-truth'
 
 if not os.path.exists(output_directory):
     os.mkdir(output_directory)
@@ -26,14 +26,14 @@ line_count = 0
 for line in lines:
     training_text_file_name = pathlib.Path(training_text_file).stem
     line_training_text = os.path.join(output_directory, f'{training_text_file_name}_{line_count}.gt.txt')
-    with open(line_training_text, 'w') as output_file:
-        output_file.writelines([line])
+    with open(line_training_text, 'w', encoding='utf-8') as output_file:
+        output_file.write(line)  # Use write instead of writelines
 
     file_base_name = f'eng_{line_count}'
 
     subprocess.run([
-        'text2image',
-        '--font=Apex',
+        r'C:\Program Files\Tesseract-OCR\text2image',
+        f'--font=NFS font Regular',
         f'--text={line_training_text}',
         f'--outputbase={output_directory}/{file_base_name}',
         '--max_pages=1',
